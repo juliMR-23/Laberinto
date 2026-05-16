@@ -24,6 +24,11 @@ public class Laberinto {
 
 	private static void buscarCamino(int fila, int col) {
 
+		// Si no es una casilla libre, no seguimos
+		if (lab[fila][col] != LIBRE) {
+			return;
+		}
+		
 		// Caso base: llegamos a la salida
 		if (fila == alto - 2 && col == ancho - 2) {
 			lab[fila][col] = CAMINO;
@@ -37,10 +42,7 @@ public class Laberinto {
 			return;
 		}
 
-		// Si no es una casilla libre, no seguimos
-		if (lab[fila][col] != LIBRE) {
-			return;
-		}
+		
 
 		// Marcamos como parte del camino
 		lab[fila][col] = CAMINO;

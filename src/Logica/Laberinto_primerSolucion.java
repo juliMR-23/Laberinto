@@ -21,15 +21,15 @@ public class Laberinto_primerSolucion {
 
     private static boolean buscarCamino(int fila, int col) {
 
+    	// Si no es una casilla libre, no seguimos
+        if (lab[fila][col] != LIBRE) {
+            return false;
+        }
+        
         // Caso base: llegamos a la salida
         if (fila == alto - 2 && col == ancho - 2) {
             lab[fila][col] = CAMINO;
             return true;
-        }
-
-        // Si no es una casilla libre, no seguimos
-        if (lab[fila][col] != LIBRE) {
-            return false;
         }
 
         // Marcamos como parte del camino
