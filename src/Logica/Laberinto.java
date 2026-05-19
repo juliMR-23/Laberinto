@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Laberinto {
 
 	private static final char LIBRE = ' ';
-	private static final char MURO = '#';
+	//private static final char MURO = '#';
 	private static final char CAMINO = '.';
 
 	private static int alto;
@@ -19,33 +19,23 @@ public class Laberinto {
 		alto = lab.length;
 		ancho = lab[0].length;
 		soluciones=new char[0][][];
+		if(lab[1][1]!=LIBRE)
+			return;
+		lab[1][1]=CAMINO;
 		buscarCamino(1, 1);
 	}
 
 	private static void buscarCamino(int fila, int col) {
-
-		// Si no es una casilla libre, no seguimos
-		if (lab[fila][col] != LIBRE) {
-			return;
-		}
 		
 		// Caso base: llegamos a la salida
 		if (fila == alto - 2 && col == ancho - 2) {
-			lab[fila][col] = CAMINO;
-			
-			char[][] copia = UtilidadesMatriz.clonar(lab);
+			char[][] copia = UtilidadesMatriz.clonar(lab);//apunta a un objeto distinto para no sobrescribir
 	        
 			soluciones = Arrays.copyOf(soluciones, soluciones.length + 1);
-			soluciones[soluciones.length - 1] = copia;
+			soluciones[soluciones.length - 1] = copia;//guardar en la lista de soluciones
 			
-			lab[fila][col] = LIBRE;
 			return;
 		}
-
-		
-
-		// Marcamos como parte del camino
-		lab[fila][col] = CAMINO;
 
 		// Movimientos:
 		// derecha, abajo, izquierda, arriba
@@ -54,11 +44,15 @@ public class Laberinto {
 
 		// Backtracking
 		for (int i = 0; i < 4; i++) {
-			buscarCamino(fila+df[i], col+dc[i]);
+			int nuevaFila=fila+df[i];
+			int nuevaCol=col+dc[i];
+			
+			if (lab[nuevaFila][nuevaCol] == LIBRE) {//ver si es válido
+				lab[nuevaFila][nuevaCol] = CAMINO;//elegir
+				buscarCamino(nuevaFila, nuevaCol);//recursión
+				lab[nuevaFila][nuevaCol] = LIBRE;//descartar
+			}
 		}
-
-		lab[fila][col] = LIBRE;
-		return;
 	}
 
 
